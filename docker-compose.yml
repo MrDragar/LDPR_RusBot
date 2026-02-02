@@ -1,0 +1,19 @@
+services:
+  bot:
+    command: python3 -m src.main
+    build: ./tg_bot
+    volumes:
+      - ./tg_bot/src:/app/src
+      - ./tg_bot/logs:/app/logs
+      - ./tg_bot/docs:/app/docs
+      - ./db.sqlite3:/app/db.sqlite3
+    env_file:
+      - .env
+    environment:
+      API_TOKEN: ${API_TOKEN}
+      ADMIN_IDS: ${ADMIN_IDS}
+      LOG_CHAT: ${LOG_CHAT}
+      LOG_LEVEL: ${LOG_LEVEL}
+      LOG_FILE: ${LOG_FILE}
+      LOG_FORMAT: ${LOG_FORMAT}
+    restart: always
