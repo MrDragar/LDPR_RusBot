@@ -107,6 +107,11 @@ class UserService(IUserService):
             raise FioFormatError(
                 f"{part_name} не может содержать более 30 символов")
 
+        if ' ' in part:
+            raise FioFormatError(
+                f"{part_name} не может содержать пробелов."
+        )
+
         if not re.match(r'^[А-Яа-яЁё\- ]+$', part):
             raise FioFormatError(
                 f"{part_name} может содержать только русские буквы"
