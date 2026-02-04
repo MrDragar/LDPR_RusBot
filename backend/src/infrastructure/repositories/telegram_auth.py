@@ -12,7 +12,7 @@ class AiogramTelegramAuthRepository(ITelegramAuthRepository):
 
     async def verify_data(self, auth_data: str) -> int:
         try:
-            init_data: WebAppInitData = await safe_parse_webapp_init_data(
+            init_data: WebAppInitData = safe_parse_webapp_init_data(
                 self._token, auth_data
             )
         except ValueError:
