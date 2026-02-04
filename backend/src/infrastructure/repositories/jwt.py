@@ -1,3 +1,4 @@
+import logging
 from datetime import timedelta, datetime, UTC
 from typing import Optional
 from dataclasses import asdict
@@ -24,13 +25,17 @@ class JWTRepository(IJWTRepository):
             expires_delta = timedelta(minutes=30)
         expire = datetime.now(UTC) + expires_delta
         data = asdict(user)
-        data["exp"] = expire
+        del data["created_at"]
+        del data["birth_date"]
+        data["exp"] = int(expire.timestamp())
         return jwt.encode(data, self.__secret_key, algorithm=self.__algorithm)
 
-    async def decode_access_token(self, token: str) -> User:
+    async def decode_access_token(self, token: str) -> int:
         payload = jwt.decode(token, self.__secret_key, algorithms=[self.__algorithm])
-        if payload['exp'] < datetime.now(UTC):
+        if int(payload.get('exp')) < datetime.now(UTC).timestamp():
             raise AuthError('Токен истёк')
-        return User(**payload)
+        if 'id' not in payload:
+            raise AuthError('Некорректный токен')
+        return payload['id']
 
 

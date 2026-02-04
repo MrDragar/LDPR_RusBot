@@ -23,7 +23,7 @@ class AuthService(IAuthService):
             raise AuthError("Пустые данные авторизации")
         try:
             user_id = await self.__telegram_auth_repository.verify_data(auth_data)
-            with self.__uow.atomic():
+            async with self.__uow.atomic():
                 user = await self.__user_repository.get_user(user_id)
             jwt_token = await self.__jwt_repository.create_access_token(user)
         except UserNotFoundError:
@@ -38,9 +38,9 @@ class AuthService(IAuthService):
         if not jwt_token:
             raise AuthError('Пустой JWT токе')
         try:
-            token_user = await self.__jwt_repository.decode_access_token(jwt_token)
-            with self.__uow.atomic():
-                user = await self.__user_repository.get_user(token_user.id)
+            user_id = await self.__jwt_repository.decode_access_token(jwt_token)
+            async with self.__uow.atomic():
+                user = await self.__user_repository.get_user(user_id)
         except UserNotFoundError:
             raise AuthBadUserError('Такого пользователя не существует')
         except Exception:

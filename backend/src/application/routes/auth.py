@@ -1,3 +1,4 @@
+import logging
 from dataclasses import asdict
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -19,6 +20,7 @@ async def login(
     try:
         token = await auth_service.authenticate(auth_data.initData)
     except Exception as e:
+        logging.exception(e)
         raise HTTPException(status_code=401, detail=f"{e}")
     return {
         'token': token

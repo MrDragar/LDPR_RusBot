@@ -64,5 +64,5 @@ class IJWTRepository:
     ) -> str:
         ...
 
-    async def decode_access_token(self, token: str) -> User:
+    async def decode_access_token(self, token: str) -> int:
         ...

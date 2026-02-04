@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import Header, Depends, HTTPException
 from starlette import status
 
@@ -16,6 +18,7 @@ async def get_current_user(
     try:
         user = await auth_service.get_user(token)
     except AuthError as e:
+        logging.exception(e)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"Ошибка авторизации {e}",
