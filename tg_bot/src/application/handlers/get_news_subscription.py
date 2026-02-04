@@ -5,6 +5,8 @@ from aiogram.fsm.context import FSMContext
 
 from src.application.keyboards.boolean_keyboard import get_boolean_keyboard
 from src.application.states import RegistrationStates
+
+from src.application.keyboards.miniapp_keyboard import get_miniapp_keyboard
 from src.services.interfaces import IUserService
 
 router = Router(name=__name__)
@@ -27,3 +29,7 @@ async def get_news_subscription(message: types.Message, state: FSMContext, user_
     )
     await state.clear()
     await message.answer_sticker(types.FSInputFile('docs/sokol_like.webp'))
+    await message.answer(
+        'Используйте кнопку ниже, чтобы открыть Mini App',
+        reply_markup=get_miniapp_keyboard()
+    )
