@@ -9,7 +9,7 @@ class User:
     username: str | None
     surname: str
     name: str
-    patronymic: str
+    patronymic: str | None
     birth_date: date
     phone_number: str
     region: str
