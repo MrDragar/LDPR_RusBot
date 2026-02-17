@@ -1,8 +1,8 @@
 import logging
 from aiogram import Bot as TgBot
+from vkbottle import PhotoMessageUploader
 
-from src.application.keyboards.boolean_keyboard import get_boolean_keyboard
-from src.application.states import RegistrationStates
+from src.application.keyboards.miniapp_keyboard import get_miniapp_keyboard
 from src.services.interfaces import IUserService
 
 logger = logging.getLogger(__name__)
@@ -15,7 +15,8 @@ async def finish_registration(
         ctx_api,
         log_chat: str,
         state_dispenser,
-        tg_bot: TgBot
+        tg_bot: TgBot,
+        photo_uploader: PhotoMessageUploader,
 ):
     """
     Завершает процесс регистрации: сохраняет пользователя в БД, 
@@ -46,7 +47,18 @@ async def finish_registration(
             gender=state_payload['gender'],
             city=state_payload['city'],
             wish_to_join=state_payload.get('wish_to_join', False),
-            home_address=state_payload.get('home_address')
+            home_address=state_payload.get('home_address'),
+            news_subscription=state_payload['news_subscription']
+        )
+
+        photo = await photo_uploader.upload(
+            'docs/sokol_like.webp',
+            peer_id=peer_id
+        )
+        await ctx_api.messages.send(
+            peer_id=peer_id,
+            attachment=photo,
+            random_id=0
         )
 
         await ctx_api.messages.send(
@@ -59,19 +71,15 @@ async def finish_registration(
             random_id=0
         )
 
-        # Переход к вопросу о подписке
         await ctx_api.messages.send(
             peer_id=peer_id,
-            message="Хотели бы вы получать информацию о инициативах и мероприятиях ЛДПР?",
-            keyboard=get_boolean_keyboard(),
+            message="Используйте кнопку ниже, чтобы открыть наш сайт",
+            keyboard=get_miniapp_keyboard(),
             random_id=0
         )
 
-        await state_dispenser.set(peer_id, RegistrationStates.NEWS_SUBSCRIPTION)
-
         log_text = (
             f"Новый пользователь зарегистрировался\n"
-            f"ID: {user.id}\n"
             f"Источник: ВК\n"
             f"Является членом партии: {'Да' if user.is_member else 'Нет'}\n"
             f"ФИО: {user.surname} {user.name} {user.patronymic or ''}\n"
@@ -83,12 +91,14 @@ async def finish_registration(
             f"Город: {user.city}\n"
             f"Хочет присоединиться к команде ЛДПР: {'Да' if user.wish_to_join else 'Нет'}\n"
             f"Домашний адрес: {user.home_address or ''}\n"
+            f"Подписка на новости: {'Есть' if user.news_subscription else 'Нет'}\n\n"
+            
             f"Номер участника: Б{user.id}"
         )
 
         await tg_bot.send_message(
             chat_id=log_chat,
-            text=log_text
+            text=log_text,
         )
 
     except Exception as e:

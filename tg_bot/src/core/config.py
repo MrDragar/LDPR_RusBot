@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-API_TOKEN = os.getenv("API_TOKEN")
+TG_API_TOKEN = os.getenv("TG_API_TOKEN")
 
 log_chat = os.getenv("LOG_CHAT")
 log_level = os.getenv("LOG_LEVEL", "INFO")

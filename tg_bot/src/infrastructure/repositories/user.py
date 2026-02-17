@@ -3,7 +3,7 @@ import logging
 from sqlalchemy import select
 
 from src.domain import exceptions
-from src.domain.entities import User
+from src.domain.entities import User, Sources
 from src.domain.interfaces import IUserRepository
 from ..interfaces import IDatabaseUnitOfWork
 from ..models.user import UserORM
@@ -25,10 +25,10 @@ class UserRepository(IUserRepository):
         await session.refresh(user_orm)
         return await user_orm.to_domain()
 
-    async def get_user(self, user_id: int) -> User:
+    async def get_user(self, user_id: int, source: Sources) -> User:
         logger.debug(f"Getting user by id={user_id}")
         session = self.__uow.get_session()
-        stmt = select(UserORM).where(UserORM.id == user_id)
+        stmt = select(UserORM).where(UserORM.id == user_id, UserORM.source == source)
         user_orm = await session.scalar(stmt)
         if user_orm is None:
             logger.debug(f"Not found user with id={user_id}")
@@ -76,12 +76,12 @@ class UserRepository(IUserRepository):
         return users
 
     async def update_user_news_subscription(
-            self, user_id: int, news_subscription: bool
+            self, user_id: int, source: Sources, news_subscription: bool
     ) -> User:
         logger.debug(f"Updating news subscription for user id={user_id} to {news_subscription}")
         session = self.__uow.get_session()
 
-        stmt = select(UserORM).where(UserORM.id == user_id)
+        stmt = select(UserORM).where(UserORM.id == user_id, UserORM.source == source)
         user_orm = await session.scalar(stmt)
 
         if user_orm is None:

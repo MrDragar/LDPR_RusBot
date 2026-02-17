@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     environment:
-      BOT_TOKEN: ${API_TOKEN}
+      BOT_TOKEN: ${TG_API_TOKEN}
       LOG_LEVEL: ${LOG_LEVEL}
       LOG_FILE: ${LOG_FILE}
       LOG_FORMAT: ${LOG_FORMAT}
@@ -19,7 +19,7 @@ services:
       - '8000:8000'
     networks:
       - app_network
-  bot:
+  tg_bot:
     command: python3 -m src.main
     build: ./tg_bot
     volumes:
@@ -30,7 +30,27 @@ services:
     env_file:
       - .env
     environment:
-      API_TOKEN: ${API_TOKEN}
+      TG_API_TOKEN: ${TG_API_TOKEN}
+      VK_API_TOKEN: ${VK_API_TOKEN}
+      ADMIN_IDS: ${ADMIN_IDS}
+      LOG_CHAT: ${LOG_CHAT}
+      LOG_LEVEL: ${LOG_LEVEL}
+      LOG_FILE: ${LOG_FILE}
+      LOG_FORMAT: ${LOG_FORMAT}
+    restart: always
+  vk_bot:
+    command: python3 -m src.main
+    build: ./vk_bot
+    volumes:
+      - ./vk_bot/src:/app/src
+      - ./logs:/app/logs
+      - ./vk_bot/docs:/app/docs
+      - ./db.sqlite3:/app/db.sqlite3
+    env_file:
+      - .env
+    environment:
+      TG_API_TOKEN: ${TG_API_TOKEN}
+      VK_API_TOKEN: ${VK_API_TOKEN}
       ADMIN_IDS: ${ADMIN_IDS}
       LOG_CHAT: ${LOG_CHAT}
       LOG_LEVEL: ${LOG_LEVEL}

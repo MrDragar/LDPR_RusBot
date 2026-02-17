@@ -1,19 +1,16 @@
 from vkbottle.bot import BotLabeler, Message
 from vkbottle.dispatch import BuiltinStateDispenser
-from aiogram import Bot as TgBot
 
-from src.application.handlers.finish_registration import finish_registration
 from src.application.keyboards.boolean_keyboard import get_boolean_keyboard
 from src.application.states import RegistrationStates
-from src.services.interfaces import IUserService
 
 router = BotLabeler()
 
 
 @router.message(state=RegistrationStates.WISH_TO_JOIN)
 async def get_wish(
-        message: Message, user_service: IUserService,
-        state_dispenser: BuiltinStateDispenser, tg_bot: TgBot
+        message: Message,
+        state_dispenser: BuiltinStateDispenser,
 ):
     text = message.text.lower().strip() if message.text else ""
     if text not in ['да', 'нет']:
@@ -25,11 +22,12 @@ async def get_wish(
     new_payload = {**state.payload, "wish_to_join": (text == 'да')}
 
     if text == 'нет':
-        await finish_registration(
-            user_service, message.from_id, new_payload,
-            message.ctx_api, message.ctx_api.log_chat, state_dispenser,
-            tg_bot
+        await message.answer(
+            message="Хотели бы вы получать информацию о инициативах и мероприятиях ЛДПР?",
+            keyboard=get_boolean_keyboard(),
         )
+        await state_dispenser.set(message.peer_id, RegistrationStates.NEWS_SUBSCRIPTION, **new_payload)
+
     else:
         await state_dispenser.set(
             message.from_id,
@@ -37,4 +35,4 @@ async def get_wish(
             **new_payload
         )
         await message.answer(
-            "Для вступления в команду укажите ваш домашний адрес:")
+            "Для возможности направления документов укажите свой домашний адрес")

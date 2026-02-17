@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from contextlib import _AsyncGeneratorContextManager
 
-from .entities import User
+from .entities import User, Sources
 
 
 class IUnitOfWork(ABC):
@@ -16,7 +16,7 @@ class IUserRepository(ABC):
         ...
 
     @abstractmethod
-    async def get_user(self, user_id: int) -> User:
+    async def get_user(self, user_id: int, source: Sources) -> User:
         ...
 
     @abstractmethod
@@ -38,7 +38,7 @@ class IUserRepository(ABC):
 
     @abstractmethod
     async def update_user_news_subscription(
-            self, user_id: int, news_subscription: bool
+            self, user_id: int, source: Sources, news_subscription: bool
     ) -> User:
         ...
 

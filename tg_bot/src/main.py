@@ -16,7 +16,7 @@ async def main():
         filename=config.log_file,
         filemode="a"
     )
-    bot = Bot(token=config.API_TOKEN)
+    bot = Bot(token=config.TG_API_TOKEN)
     container = Container()
     logging.debug(f"{vars(container)}, {container.user_service}")
     logging.debug("")
@@ -25,7 +25,6 @@ async def main():
     dp = Dispatcher()
     dp.update.middleware(di_middleware)
     dp.include_router(root_router)
-    # await bot.delete_webhook()
     logging.debug("Starting bot")
     await dp.start_polling(bot)
 

@@ -1,4 +1,5 @@
 from src.core.di import DeclarativeContainer, providers
+from src.domain.entities import Sources
 from src.domain.interfaces import IUnitOfWork, IUserRepository, IStringSorterRepository
 from src.infrastructure import Database, UnitOfWork
 from src.infrastructure.interfaces import IDatabase
@@ -22,7 +23,7 @@ class Container(DeclarativeContainer):
         FuzzywuzzyRepository
     )
     user_service: providers.Factory[IUserService] = providers.Factory(
-        UserService, user_repo=user_repository, uow=uow, string_sorter_repo=string_sorter
+        UserService, user_repo=user_repository, uow=uow, string_sorter_repo=string_sorter, source=Sources.TG
     )
     log_chat: providers.Object[str] = providers.Object(config.log_chat)
     admin_ids: providers.Object[list[int]] = providers.Object(config.admin_ids)

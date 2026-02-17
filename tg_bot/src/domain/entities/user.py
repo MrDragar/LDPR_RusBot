@@ -1,10 +1,18 @@
+import enum
 from dataclasses import dataclass, field
 from datetime import date, datetime
+
+
+class Sources(enum.Enum):
+    VK = 'vk'
+    TG = 'tg'
+    MAX = 'max'
 
 
 @dataclass
 class User:
     id: int
+    source: Sources
     is_member: bool
     username: str | None
     surname: str

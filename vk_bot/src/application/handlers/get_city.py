@@ -4,10 +4,8 @@ from aiogram import Bot as TgBot
 from vkbottle.bot import BotLabeler, Message
 from vkbottle.dispatch import BuiltinStateDispenser
 
-from src.application.handlers.finish_registration import finish_registration
 from src.application.keyboards.boolean_keyboard import get_boolean_keyboard
 from src.application.states import RegistrationStates
-from src.services.interfaces import IUserService
 
 router = BotLabeler()
 
@@ -15,7 +13,6 @@ router = BotLabeler()
 @router.message(state=RegistrationStates.CITY)
 async def get_city(
         message: Message, state_dispenser: BuiltinStateDispenser,
-        user_service: IUserService, tg_bot: TgBot
 ):
     city = message.text.strip() if message.text else ""
     if len(city) < 2:
@@ -29,7 +26,7 @@ async def get_city(
                                   RegistrationStates.HOME_ADDRESS,
                                   **new_payload)
         await message.answer(
-            "Укажите ваш домашний адрес (улица, дом, квартира):")
+            "Укажите ваш домашний адрес):")
     else:
         await state_dispenser.set(message.from_id,
                                   RegistrationStates.WISH_TO_JOIN,
