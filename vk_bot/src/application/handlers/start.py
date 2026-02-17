@@ -28,7 +28,7 @@ async def start(
             "Добро пожаловать в ЛДПР! Вы уже зарегистрированы."
         )
         await message.answer(
-            "Используйте кнопку ниже, чтобы открыть Mini App",
+            "Используйте кнопку ниже, чтобы открыть наш сайт",
             keyboard=get_miniapp_keyboard()
         )
         return
