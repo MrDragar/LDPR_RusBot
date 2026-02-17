@@ -34,7 +34,7 @@ async def finish_registration(user_service: IUserService, state: FSMContext, mes
         types.FSInputFile('docs/sokol_like.webp')
     )
     await message.answer(
-        f"Поздравляем, вы успешно зарегистрированы.\nВаш уникальный номер - Б{user.id}. Обрабатываю данные, скоро я пришлю дату следующего розыгрыша.",
+        f"Поздравляем, вы успешно зарегистрированы.\nВаш уникальный номер - Б{user.id}.",
         parse_mode="HTML",
         reply_markup=types.ReplyKeyboardRemove()
     )
