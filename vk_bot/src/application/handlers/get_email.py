@@ -22,3 +22,5 @@ async def get_email(message: Message, user_service: IUserService,
             "Укажите регион вашего проживания (начните вводить название):")
     except exceptions.EmailBadFormatError:
         return "Некорректный формат email. Попробуйте еще раз."
+    except exceptions.EmailAlreadyExistsError:
+        return "Данный почтовый адрес уже зарегистрирован в системе"
