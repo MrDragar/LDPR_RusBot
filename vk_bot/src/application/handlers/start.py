@@ -35,6 +35,7 @@ async def start(
     photo = await photo_uploader.upload('docs/sokol_stay.webp', peer_id=message.peer_id)
     await message.answer(attachment=photo)
     await message.answer("Здравствуйте. Я, соколёнок Русик, интернет-помощник ЛДПР. Добро пожаловать в ЛДПР!")
+    await message.answer("Если вы допустили ошибку при заполнении анкеты, напишите мне 'Заново' или 'Начать'")
     await message.answer(
         "Для начала дайте согласие на обработку персональных данных",
         keyboard=get_personal_data_keyboard()
