@@ -27,7 +27,7 @@ async def start(message: types.Message, user_service: IUserService,
             "Здравствуйте. Я, соколёнок Русик, интернет-помощник ЛДПР. Добро пожаловать в ЛДПР!"
         )
         await message.answer(
-            'Используйте кнопку ниже, чтобы открыть Mini App',
+            'Используйте кнопку ниже, чтобы открыть наш сайт',
             reply_markup=get_miniapp_keyboard()
         )
         return

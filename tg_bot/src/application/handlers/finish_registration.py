@@ -39,7 +39,7 @@ async def finish_registration(user_service: IUserService, state: FSMContext, mes
         reply_markup=types.ReplyKeyboardRemove()
     )
     await message.answer(
-        'Используйте кнопку ниже, чтобы открыть Mini App',
+        'Используйте кнопку ниже, чтобы открыть наш сайт',
         reply_markup=get_miniapp_keyboard()
     )
     await message.bot.send_message(chat_id=log_chat, text=f"""
