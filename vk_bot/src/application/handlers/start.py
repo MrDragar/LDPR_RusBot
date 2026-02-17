@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 @router.message()
-@start_command_router.message(text=["Начать", "/start"])
+@start_command_router.message(text=["Начать", "/start", "start", "начать", "Заново", "заново"])
 async def start(
         message: Message, user_service: IUserService, 
         state_dispenser: BuiltinStateDispenser, photo_uploader: PhotoMessageUploader
