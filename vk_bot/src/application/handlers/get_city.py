@@ -26,7 +26,8 @@ async def get_city(
                                   RegistrationStates.HOME_ADDRESS,
                                   **new_payload)
         await message.answer(
-            "Укажите ваш домашний адрес):")
+            "Укажите ваш домашний адрес:"
+        )
     else:
         await state_dispenser.set(message.from_id,
                                   RegistrationStates.WISH_TO_JOIN,

@@ -38,7 +38,7 @@ async def retry_region_callback(event: GroupTypes.MessageEvent, state_dispenser:
     if not state_peer or state_peer.state not in [str(RegistrationStates.REGION_BY_TEXT), str(RegistrationStates.REGION_BY_BUTTON)]:
         return
 
-    state = await state_dispenser.get(event.object.from_id)
+    state = await state_dispenser.get(event.object.peer_id)
     await state_dispenser.set(event.object.peer_id, RegistrationStates.REGION_BY_TEXT, **state.payload)
     await event.ctx_api.messages.send(
         peer_id=event.object.peer_id,
