@@ -1,9 +1,9 @@
 from datetime import date, datetime, UTC
 
-from sqlalchemy import Date, DateTime
+from sqlalchemy import Date, DateTime, Enum as SQLEnum
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.domain.entities.user import User
+from src.domain.entities.user import User, Sources
 from src.infrastructure.database import Base
 
 
@@ -11,6 +11,7 @@ class UserORM(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column("id", primary_key=True)
+    source: Mapped[Sources] = mapped_column(SQLEnum(Sources), name="source", primary_key=True)
     is_member: Mapped[bool] = mapped_column("is_member", nullable=False)
     username: Mapped[str] = mapped_column("username", nullable=True)
     surname: Mapped[str] = mapped_column("surname", nullable=False)
@@ -35,6 +36,7 @@ class UserORM(Base):
     async def to_domain(self) -> User:
         return User(
             id=self.id,
+            source=self.source,
             is_member=self.is_member,
             username=self.username,
             surname=self.surname,
@@ -56,6 +58,7 @@ class UserORM(Base):
     async def from_domain(cls, user: User) -> 'UserORM':
         return cls(
             id=user.id,
+            source=user.source,
             is_member=user.is_member,
             username=user.username,
             surname=user.surname,

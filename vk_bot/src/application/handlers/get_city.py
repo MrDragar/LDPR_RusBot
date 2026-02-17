@@ -31,12 +31,6 @@ async def get_city(
         await message.answer(
             "Укажите ваш домашний адрес (улица, дом, квартира):")
     else:
-        await finish_registration(
-            user_service, message.from_id, new_payload,
-            message.ctx_api, message.ctx_api.log_chat, state_dispenser,
-            tg_bot
-        )
-
         await state_dispenser.set(message.from_id,
                                   RegistrationStates.WISH_TO_JOIN,
                                   **new_payload)

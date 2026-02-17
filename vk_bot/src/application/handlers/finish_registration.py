@@ -71,7 +71,8 @@ async def finish_registration(
 
         log_text = (
             f"Новый пользователь зарегистрировался\n"
-            f"Источник: ВК"
+            f"ID: {user.id}\n"
+            f"Источник: ВК\n"
             f"Является членом партии: {'Да' if user.is_member else 'Нет'}\n"
             f"ФИО: {user.surname} {user.name} {user.patronymic or ''}\n"
             f"Пол: {user.gender}\n"
@@ -80,8 +81,8 @@ async def finish_registration(
             f"Номер телефона: {user.phone_number}\n"
             f"Регион: {user.region}\n"
             f"Город: {user.city}\n"
-            f"Хочет присоединиться к команде ЛДПР: {'Да' if user.wish_to_join else 'Нет'}"
-            f"Домашний адрес: {user.home_address or ''}"
+            f"Хочет присоединиться к команде ЛДПР: {'Да' if user.wish_to_join else 'Нет'}\n"
+            f"Домашний адрес: {user.home_address or ''}\n"
             f"Номер участника: Б{user.id}"
         )
 

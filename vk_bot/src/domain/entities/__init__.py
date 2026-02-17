@@ -1,6 +1,7 @@
-from .user import User
+from .user import User, Sources
 
 
-all = [
-    'User'
+__all__ = [
+    'User',
+    'Sources'
 ]
