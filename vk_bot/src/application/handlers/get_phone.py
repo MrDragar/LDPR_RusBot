@@ -21,7 +21,9 @@ async def get_phone(message: Message, user_service: IUserService,
         await message.answer("Введите адрес вашей электронной почты:")
     except exceptions.PhoneBadFormatError:
         return "Некорректный формат. Пример: +79991234567"
+    except exceptions.PhoneBadCountryError:
+        return "К сожалению, мы поддерживаем работу только с российскими номерами. Попробуйте ввести другой номер телефона"
     except exceptions.PhoneAlreadyExistsError:
-        return "Этот номер уже зарегистрирован в системе."
+        return "Пользователь с данным номером телефона уже существует"
     except Exception as e:
-        return f"Ошибка: {str(e)}"
+        return "Неизвестная ошибка"
